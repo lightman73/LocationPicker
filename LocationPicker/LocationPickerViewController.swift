@@ -43,6 +43,8 @@ open class LocationPickerViewController: UIViewController {
     
     /// default: "Select"
     public var selectButtonTitle = "Select"
+    
+    public var searchBarInTitle = true
 	
 	public lazy var currentLocationButtonBackground: UIColor = {
 		if let navigationBar = self.navigationController?.navigationBar,
@@ -126,10 +128,10 @@ open class LocationPickerViewController: UIViewController {
 		view = mapView
 		
 		if showCurrentLocationButton {
-			let button = UIButton(frame: CGRect(x: 0, y: 0, width: 32, height: 32))
+			let button = UIButton(frame: CGRect(x: 0, y: 0, width: 38, height: 38))
 			button.backgroundColor = currentLocationButtonBackground
 			button.layer.masksToBounds = true
-			button.layer.cornerRadius = 16
+			button.layer.cornerRadius = 19
 			let bundle = Bundle(for: LocationPickerViewController.self)
 			button.setImage(UIImage(named: "geolocation", in: bundle, compatibleWith: nil), for: UIControl.State())
 			button.addTarget(self, action: #selector(LocationPickerViewController.currentLocationPressed),
@@ -160,12 +162,12 @@ open class LocationPickerViewController: UIViewController {
 		mapView.addGestureRecognizer(locationSelectGesture)
 
 		// search
-        if #available(iOS 11.0, *) {
-            navigationItem.searchController = searchController
-        } else {
+        if searchBarInTitle {
             navigationItem.titleView = searchBar
             // http://stackoverflow.com/questions/32675001/uisearchcontroller-warning-attempting-to-load-the-view-of-a-view-controller/
             _ = searchController.view
+        } else {
+            navigationItem.searchController = searchController
         }
 		definesPresentationContext = true
 		
